@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monaco Editor Example</title>
+    <style>
+        body {
+            background-color: #161616;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+            position: relative; /* Needed to position status-box and editor-container properly */
+        }
+
+        #status-box {
+            width: 70%;
+            background-color: #0F0F0F;
+            border: 2px solid #595959;
+            border-radius: 10px 10px 0 0; /* Rounded corners on top */
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            position: absolute; /* Positioned absolutely */
+            top: 114px; /* Gap from the top of the viewport */
+            left: 15%; /* Center horizontally based on the editor container width */
+            z-index: 10; /* Ensure it’s above the editor container */
+        }
+
+        #status-box .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: red;
+            box-shadow: 0 0 10px red; /* Initial red glowing effect */
+            margin-right: 10px; /* Space between dot and text */
+            transition: background-color 1s, box-shadow 1s; /* Smooth transition */
+        }
+
+        #status-box .text {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 16px;
+            font-family: sans-serif; /* Use a generic sans-serif font */
+        }
+
+        #editor-container {
+            width: 70%;
+            height: 70%;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid #595959;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            position: relative; /* Ensure the box aligns with this */
+            margin-top: 80px; /* Space for the status box and gap */
+        }
+
+        #editor {
+            width: 100%;
+            height: 100%;
+        }
+
+        #extra-box {
+            background-color: #0F0F0F;
+            border-radius: 5px; /* Barely rounded corners */
+            width: 30%; /* Adjusted width */
+            height: 45px; /* Reduced height */
+            position: absolute;
+            bottom: -60px; /* Space between the editor and the extra box */
+            left: 0; /* Align with the left edge of the editor container */
+            display: flex; /* Use flexbox to align the images */
+            align-items: center; /* Center the images vertically */
+            padding-left: 10px; /* Space between the left edge and the images */
+            box-sizing: border-box;
+        }
+
+        #extra-box img {
+            width: 24px; /* Ensure all icons are the same size */
+            height: 24px; /* Ensure all icons are the same size */
+            margin-right: 10px; /* Space between the images */
+            cursor: pointer; /* Change cursor to pointer for clickable images */
+        }
+
+        #extra-box img:last-child {
+            margin-right: 0; /* Remove margin for the last image */
+        }
+
+        #controls-button {
+            position: absolute;
+            bottom: 10px; /* Distance from the bottom of the viewport */
+            background-color: #0F0F0F;
+            border: 2px solid #595959;
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: #FFFFFF;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            z-index: 20; /* Ensure it's above other elements */
+            font-family: sans-serif; /* Use a simple sans-serif font */
+            font-size: 14px; /* Adjust font size if needed */
+        }
+
+        #controls-button a {
+            color: #FFFFFF;
+            text-decoration: none;
+            display: block; /* Ensure the entire button is clickable */
+        }
+    </style>
+</head>
+<body>
+
+<div id="status-box">
+    <div id="status-dot" class="dot"></div>
+    <div id="status-text" class="text">Offline</div>
+</div>
+
+<div id="editor-container">
+    <div id="editor"></div>
+    <div id="extra-box">
+        <img src="icons/play.png" alt="Play Icon">
+        <img id="garbage-icon" src="icons/garbage.png" alt="Garbage Icon">
+        <img src="icons/save.png" alt="Save Icon">
+        <img src="icons/export.png" alt="Export Icon">
+        <img id="inject-icon" src="icons/inject.png" alt="Inject Icon">
+    </div> <!-- Additional box -->
+</div>
+
+<div id="controls-button">
+    <a href="https://gofile.io/d/VTltn3" target="_blank">Controls - Download First</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
+<script>
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+        var editor = monaco.editor.create(document.getElementById('editor'), {
+            value: [
+                'function example() {',
+                '\tconsole.log("This is a Monaco Editor example!");',
+                '}'
+            ].join('\n'),
+            language: 'javascript',
+            theme: 'vs-dark',
+            smoothScrolling: true, // Enable smooth scrolling
+            fontSize: 14, // Adjusted font size
+            scrollbar: {
+                vertical: 'visible',
+                horizontal: 'visible'
+            },
+            suggestOnTriggerCharacters: true, // Autocomplete suggestion
+            tabSize: 4
+        });
+
+        // Example: Adjust size of the extra box
+        document.getElementById('extra-box').style.width = '30%'; // Adjust width
+        document.getElementById('extra-box').style.height = '45px'; // Adjust height
+
+        // Custom auto-completion for words starting with "P"
+        monaco.languages.registerCompletionItemProvider('javascript', {
+            triggerCharacters: ['P'],
+            provideCompletionItems: function(model, position) {
+                var suggestions = [
+                    {
+                        label: 'Print',
+                        kind: monaco.languages.CompletionItemKind.Function,
+                        insertText: 'Print()',
+                        detail: 'Print to console'
+                    },
+                    {
+                        label: 'ParseInt',
+                        kind: monaco.languages.CompletionItemKind.Function,
+                        insertText: 'ParseInt(${1:value}, 10)',
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        detail: 'Parse a string and return an integer'
+                    },
+                    {
+                        label: 'Promise',
+                        kind: monaco.languages.CompletionItemKind.Keyword,
+                        insertText: 'Promise',
+                        detail: 'JavaScript Promise object'
+                    }
+                ];
+
+                return { suggestions: suggestions };
+            }
+        });
+
+        // Add click event listener to the garbage icon
+        document.getElementById('garbage-icon').addEventListener('click', function() {
+            editor.setValue(''); // Clear the editor content
+        });
+
+        // Add click event listener to the inject icon
+        document.getElementById('inject-icon').addEventListener('click', function() {
+            var statusDot = document.getElementById('status-dot');
+            var statusText = document.getElementById('status-text');
+
+            // Change text to "Online" immediately
+            statusText.textContent = 'Online';
+
+            // Wait 3 seconds before starting the transition for the dot
+            setTimeout(function() {
+                statusDot.style.backgroundColor = 'lime'; // Intermediate step to avoid abrupt transition
+                statusDot.style.boxShadow = '0 0 10px lime';
+
+                // Fading effect to lime green
+                setTimeout(function() {
+                    statusDot.style.backgroundColor = 'lime'; // Final color
+                    statusDot.style.boxShadow = '0 0 10px lime'; // Final glow
+                }, 1000); // Duration of the fade effect
+            }, 3000); // Wait time before starting the transition
+        });
+    });
+</script>
+
+</body>
+</html>
