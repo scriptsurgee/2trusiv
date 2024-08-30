@@ -2,49 +2,302 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon</title>
+    <title>Tabbed Interface with Modal</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
-            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #191919;
+            color: white;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .side-panel {
+            width: 200px;
+            background-color: #181818;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .side-panel a {
+            width: 160px;
+            padding: 15px 0;
+            margin: 10px 0;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+            position: relative;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .side-panel a:hover {
+            color: #e0e0e0;
+        }
+
+        .side-panel a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background-color: white;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .side-panel a.active::after {
+            width: 50%;
+            left: 25%;
+        }
+
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .square-box {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #828282;
+            background-color: transparent;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 300px;
+            background-color: rgba(24, 24, 24, 0.9);
+            border: 3px solid #828282;
+            padding: 20px;
+            border-radius: 15px;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .modal input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
             background-color: #191919;
-            font-family: Arial, sans-serif;
-            color: #fff;
+            border: 2px solid #828282;
+            color: white;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 10px;
+            background-color: #272727;
+            border: 2px solid #828282;
+            color: white;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .modal button:hover {
+            background-color: #373737;
+            border-color: #ffffff;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9;
+        }
+
+        .claim-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #272727;
+            border: 2px solid #828282;
+            color: white;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .claim-button:hover {
+            background-color: #373737;
+            border-color: #ffffff;
+        }
+
+        /* Notification Box */
+        .notification {
+            display: none;
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            color: black;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 11;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: bottom 0.5s ease;
+        }
+
+        .show-notification {
+            bottom: 20px;
+        }
+
+        /* Price Box */
+        .price-box {
+            width: 600px;
+            height: 300px;
+            background-color: rgba(24, 24, 24, 0.9);
+            border: 3px solid #828282;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
             text-align: center;
         }
 
-        .wrapper {
-            text-align: center;
+        .price-box h2 {
+            font-size: 24px;
+            margin: 0;
         }
 
-        .heading {
-            font-size: 2rem;
-        }
-
-        .description {
-            font-size: 1rem;
-            margin-top: 0.5rem;
-            color: #ccc;
-            max-width: 600px;
-            margin: 0 auto;
+        .price-box p {
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-
-    <div class="wrapper">
-
-        <!-- Elfsight Countdown Widget -->
-        <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
-        <div class="elfsight-app-de7c63df-de24-4dd3-9fe1-4b62eee6a988" data-elfsight-app-lazy></div>
+    <div class="side-panel">
+        <a href="#home" class="active" onclick="showTab(event, 'home')">Home</a>
+        <a href="#redeem" onclick="showTab(event, 'redeem')">Redeem</a>
+        <a href="#prices" onclick="showTab(event, 'prices')">Prices</a>
     </div>
 
+    <div class="content">
+        <div id="home" class="tab-content active">
+            <div class="square-box">
+                Time Left: 0
+            </div>
+        </div>
+        <div id="redeem" class="tab-content">
+            <button class="claim-button" onclick="openModal()">Redeem - Click Me</button>
+        </div>
+        <div id="prices" class="tab-content">
+            <div class="price-box">
+                <h2>Price: 10,000 Robux</h2>
+                <p>I only accept Robux gift cards.</p>
+                <p>If you want to purchase, please DM <strong>@decompp</strong> on Discord.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal" id="modal">
+        <input type="text" id="claim-input" placeholder="Enter Licenses:">
+        <button onclick="handleClaim()">Claim</button>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        let hasClaimed = false;
+        const correctCode = "LT_2TRUSIV-3947JRE8IW2UF8";
+
+        function showTab(event, tabId) {
+            event.preventDefault();
+            var tabs = document.querySelectorAll('.tab-content');
+            var links = document.querySelectorAll('.side-panel a');
+            
+            tabs.forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            links.forEach(function(link) {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        function openModal() {
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('modal-overlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        function handleClaim() {
+            const input = document.getElementById("claim-input").value.trim();
+            const notification = document.getElementById("notification");
+
+            if (input === correctCode) {
+                if (!hasClaimed) {
+                    notification.innerText = "Success!";
+                    hasClaimed = true;
+                } else {
+                    notification.innerText = "Already Claimed.";
+                }
+            } else {
+                notification.innerText = "Invalid Code.";
+            }
+
+            showNotification();
+            closeModal();
+        }
+
+        function showNotification() {
+            const notification = document.getElementById("notification");
+            notification.classList.add("show-notification");
+
+            setTimeout(function() {
+                notification.classList.remove("show-notification");
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
