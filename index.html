@@ -2,136 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2trusiv - Home</title>
+    <title>Coming Soon</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: rgb(19, 19, 19); /* Background color */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #191919;
             font-family: Arial, sans-serif;
-            position: relative; /* Ensure body is relative for absolute positioning of the center box */
-            overflow: hidden; /* Hide scrollbar */
-            opacity: 0; /* Start hidden */
-            animation: fadeIn 1.5s forwards; /* Apply fade-in animation */
+            color: #fff;
+            text-align: center;
         }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+
+        .wrapper {
+            text-align: center;
         }
-        #side-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background-color: rgb(23, 23, 23); /* Side panel/banner color */
-            width: 250px; /* Default width, can be adjusted via script */
-            transition: width 0.3s; /* Smooth transition for width changes */
-            z-index: 1000;
-            padding-top: 60px; /* Space from the top for the buttons */
+
+        .heading {
+            font-size: 2rem;
         }
-        #home-button, #claim-button, #prices-button {
-            display: block;
-            width: 180px; /* Increased width */
-            margin: 10px auto; /* Center the button horizontally and add space between buttons */
-            padding: 10px 20px; /* Button padding */
-            background-color: transparent; /* Transparent background */
-            color: #5f5f5f; /* Button text color */
-            text-align: center; /* Center the text */
-            border-radius: 25px; /* Rounded corners */
-            border: 2px solid #505050; /* Button border color */
-            cursor: pointer; /* Pointer cursor on hover */
-            font-size: 18px; /* Font size */
-            font-weight: bold; /* Bold text */
-            transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions for hover effects */
-        }
-        #home-button:hover, #claim-button:hover, #prices-button:hover {
-            border-color: #272727; /* Darker border on hover */
-        }
-        #center-box, #bottom-box {
-            position: absolute;
-            width: 700px;
-            height: 300px;
-            background-color: rgba(0, 0, 0, 0); /* Transparent middle */
-            border: 2px solid rgb(71, 71, 71); /* Border color */
-            border-radius: 15px; /* Rounded corners */
-            display: flex; /* Enable flexbox layout */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            text-align: center; /* Center text */
-        }
-        #center-box {
-            top: 60px; /* Position from the top */
-            left: 349px; /* Initial position from the left */
-            right: 0;
-            margin: auto; /* Center box horizontally with respect to the left and right */
-        }
-        #bottom-box {
-            top: 540px; /* Position below the center box */
-            left: 759px; /* Align with the center box */
-            right: 0;
-            display: flex; /* Flexbox to center the text */
-            justify-content: center; /* Center text horizontally */
-            align-items: center; /* Center text vertically */
-        }
-        #bottom-text {
-            color: #686868; /* Text color */
-            font-size: 24px; /* Adjust size as needed */
-            font-weight: bold; /* Bold text */
-        }
-        #center-text {
-            font-weight: bold; /* Bold font */
-            color: #686868; /* White text color for visibility */
-            font-size: 36px; /* Adjust size as needed */
+
+        .description {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
-    <div id="side-panel">
-        <button id="home-button">Home</button> <!-- Rounded button -->
-        <button id="claim-button">Claim</button> <!-- Existing button -->
-        <button id="prices-button">Prices & Buying</button> <!-- New button -->
-    </div>
-    <div id="center-box">
-        <div id="center-text">Time Left: 0</div>
-    </div>
-    <div id="bottom-box">
-        <div id="bottom-text">In 2trusiv We Trust</div> <!-- Text added here -->
+
+    <div class="wrapper">
+        <h1 class="heading">WE ARE COMING SOON</h1>
+        <p class="description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa expedita nemo minus optio quos doloribus! Deleniti, placeat voluptates, sunt enim quidem hic minus dignissimos culpa odio iusto recusandae porro natus!</p>
+
+        <!-- Elfsight Countdown Widget -->
+        <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+        <div class="elfsight-app-de7c63df-de24-4dd3-9fe1-4b62eee6a988" data-elfsight-app-lazy></div>
     </div>
 
-    <script>
-        // Adjust the width of the side panel/banner
-        function setSidePanelWidth(width) {
-            var panel = document.getElementById('side-panel');
-            panel.style.width = width + 'px';
-        }
-
-        // Adjust the position of the center box
-        function setCenterBoxPosition(topOffset, leftOffset) {
-            var box = document.getElementById('center-box');
-            
-            // Apply new position
-            box.style.top = topOffset + 'px';
-            box.style.left = leftOffset + 'px';
-        }
-
-        // Example usage: set the side panel width to 300px and position the center box
-        setSidePanelWidth(300);
-        setCenterBoxPosition('50px', '30px'); // Move the box 50px from the top and 30px from the left
-
-        // Add click event listener for the "Claim" button
-        document.getElementById('claim-button').addEventListener('click', function() {
-            window.location.href = 'claim.html'; // Navigate to claim.html
-        });
-
-        // Add click event listener for the "Prices & Buying" button
-        document.getElementById('prices-button').addEventListener('click', function() {
-            window.location.href = 'prices.html'; // Navigate to prices.html
-        });
-    </script>
 </body>
 </html>
