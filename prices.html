@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2trusiv - Prices</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgb(19, 19, 19);
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Move towards the right of the screen */
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        #side-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: rgb(23, 23, 23);
+            width: 250px;
+            transition: width 0.3s;
+            z-index: 1000;
+            padding-top: 60px;
+            animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+        }
+
+        #home-button,
+        #claim-button,
+        #prices-button {
+            display: block;
+            width: 180px;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #5f5f5f;
+            text-align: center;
+            border-radius: 25px;
+            border: 2px solid #505050;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s, border-color 0.3s;
+            animation: fadeIn 1.5s ease-in-out; /* Apply fade-in animation */
+        }
+
+        #home-button:hover,
+        #claim-button:hover,
+        #prices-button:hover {
+            border-color: #272727;
+        }
+
+        /* Center box styling */
+        #center-box {
+            width: 400px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            border: 2px solid #595959; /* Border color */
+            text-align: center;
+            color: white;
+            font-weight: bold; /* Make text bold */
+            border-radius: 15px;
+            animation: fadeIn 1.5s ease-in-out; /* Apply fade-in animation */
+            margin-right: 559px; /* Move box further to the right */
+        }
+
+        #center-box p {
+            margin: 10px 0;
+            font-family: inherit; /* No specific font applied */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="side-panel">
+        <button id="home-button">Home</button>
+        <button id="claim-button">Claim</button>
+        <button id="prices-button">Prices & Buying</button>
+    </div>
+
+    <!-- Center box with text -->
+    <div id="center-box">
+        <p>10,000 Robux Lifetime</p>
+        <p>DM @decompp On Discord To Buy</p>
+        <p><em>* Robux Giftcards Only *</em></p>
+    </div>
+
+    <script>
+        // Adjust the width of the side panel/banner
+        function setSidePanelWidth(width) {
+            var panel = document.getElementById('side-panel');
+            panel.style.width = width + 'px';
+        }
+
+        // Redirects for buttons
+        document.getElementById('home-button').onclick = function () {
+            window.location.href = 'index.html';
+        };
+
+        document.getElementById('claim-button').onclick = function () {
+            window.location.href = 'claim.html';
+        };
+
+        document.getElementById('prices-button').onclick = function () {
+            window.location.href = 'prices.html';
+        };
+
+        // Example usage: set the side panel width to 300px
+        setSidePanelWidth(300);
+    </script>
+</body>
+
+</html>
