@@ -28,14 +28,107 @@
             margin-top: 0.5rem;
             color: #ccc;
         }
+
+        .countdown {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .box {
+            background-color: #2e2e2e;
+            color: #fff;
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .label {
+            font-size: 0.75rem;
+            color: #ccc;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="message">
-       - Coming Soon -
+        Coming Soon..
     </div>
     <div class="sub-message">
         With The Power Of 2trusiv
     </div>
+    <div class="countdown">
+        <div class="box" id="days">
+            <span id="days-count">0</span>
+            <div class="label">Days</div>
+        </div>
+        <div class="box" id="hours">
+            <span id="hours-count">0</span>
+            <div class="label">Hours</div>
+        </div>
+        <div class="box" id="minutes">
+            <span id="minutes-count">0</span>
+            <div class="label">Minutes</div>
+        </div>
+        <div class="box" id="seconds">
+            <span id="seconds-count">0</span>
+            <div class="label">Seconds</div>
+        </div>
+    </div>
+
+    <script>
+        function initializeCountdown() {
+            const storedEndDate = localStorage.getItem('endDate');
+            let endDate;
+
+            if (!storedEndDate) {
+                endDate = new Date();
+                endDate.setDate(endDate.getDate() + 5); // Set the countdown to 5 days from now
+                localStorage.setItem('endDate', endDate.toISOString());
+            } else {
+                endDate = new Date(storedEndDate);
+            }
+
+            function updateCountdown() {
+                const now = new Date();
+                const timeDiff = endDate - now;
+
+                if (timeDiff <= 0) {
+                    document.getElementById('days-count').innerText = '0';
+                    document.getElementById('hours-count').innerText = '0';
+                    document.getElementById('minutes-count').innerText = '0';
+                    document.getElementById('seconds-count').innerText = '0';
+                    return;
+                }
+
+                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                document.getElementById('days-count').innerText = days;
+                document.getElementById('hours-count').innerText = hours;
+                document.getElementById('minutes-count').innerText = minutes;
+                document.getElementById('seconds-count').innerText = seconds;
+            }
+
+            // Update countdown every second
+            setInterval(updateCountdown, 1000);
+
+            // Initial call to set the countdown immediately
+            updateCountdown();
+        }
+
+        initializeCountdown();
+    </script>
 </body>
 </html>
